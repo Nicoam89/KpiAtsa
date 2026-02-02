@@ -1,0 +1,52 @@
+/* HEADER */
+.app-header {
+  background-color: #000;        /* negro */
+  color: #fff;                   /* texto blanco */
+  padding: 24px 32px;            /* más padding que el body */
+  border-radius: 16px;           /* esquinas redondeadas */
+  margin-bottom: 24px;           /* separación con el contenido */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Logo + título */
+.app-header__left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+}
+
+.app-header__title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding-left: 1.5rem;
+}
+
+/* Selector */
+.app-header__actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* Botones */
+.app-header__button {
+  padding: 6px 14px;
+  border-radius: 8px;
+ 
+  background: #0075bf;
+  color: #fff;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.app-header__button--active {
+  background: #fff;
+  color: #000;
+}
+
+
+button:hover {
+  transform: scale(1.1);
+}
