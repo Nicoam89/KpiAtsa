@@ -10,7 +10,8 @@ export default function useKpis(period) {
       try {
         setLoading(true);
 
-        const res = await fetch(`http://localhost:3000/api/kpis?period=${period}`);
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/kpis?period=${period}`)
+;
 
         if (!res.ok) throw new Error("Error API");
 
