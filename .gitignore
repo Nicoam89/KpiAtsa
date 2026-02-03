@@ -17,7 +17,7 @@ build/
 Thumbs.db
 
 # excel / datos sensibles
-backend/data/*.xlsx
+# backend/data/*.xlsx
 
 # vite cache
 .vite

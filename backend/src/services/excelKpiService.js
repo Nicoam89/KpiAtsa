@@ -2,7 +2,11 @@ import ExcelJS from "exceljs";
 import path from "path";
 
 // 📂 archivo único
-const FILE_PATH = path.resolve("data/Consolidacion KPI.xlsx");
+const filePath = path.join(
+  process.cwd(),
+  "data",
+  "Consolidacion KPI.xlsx"
+);
 
 // cache por período
 const cache = {
