@@ -1,6 +1,8 @@
 import PeriodToggle from "./PeriodToggle";
+import "../styles/layout.css";
 
-export default function Header({ period, setPeriod }) {
+
+export default function Header({ period, setPeriod, onLogout }) {
   return (
     <div className="app-header">
       <h1 className="text-2xl font-bold">
@@ -9,12 +11,7 @@ export default function Header({ period, setPeriod }) {
 
       <PeriodToggle period={period} setPeriod={setPeriod} />
 
-<button
-          onClick={onLogout}
-          className="ml-4 px-3 py-1 rounded-lg text-sm font-semibold bg-red-500 text-white hover:bg-red-600"
-        >
-          Logout
-        </button>
+  <button onClick={onLogout}>Salir</button>
     </div>
   );
 }

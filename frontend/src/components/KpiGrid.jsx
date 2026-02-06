@@ -1,5 +1,6 @@
 import KpiCard from "./KpiCard";
 import { KPI_CONFIG } from "../config/kpis.config";
+import "../styles/layout.css";
 
 export default function KpiGrid({ data }) {
   return (

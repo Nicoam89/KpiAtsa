@@ -5,7 +5,7 @@ export default function useKpis(period) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`/api/kpis?period=${period}`)
+    fetch(`http://localhost:3000/api/kpis?period=${period}`)
       .then(r => r.json())
       .then(d => {
         setData(d);
@@ -13,6 +13,8 @@ export default function useKpis(period) {
       });
   }, [period]);
 
+
+  
   return { data, loading, error: null };
 }
 

@@ -1,3 +1,4 @@
+
 export default function KpiCardSkeleton() {
   return (
     <div className="bg-white rounded-2xl shadow p-5 animate-pulse">

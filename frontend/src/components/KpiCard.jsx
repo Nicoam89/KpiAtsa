@@ -1,6 +1,6 @@
 import { getKpiStatus } from "../utils/kpiStatus";
 import { formatValue } from "../utils/formatters";
-
+import "../styles/layout.css";
 
 export default function KpiCard({ title, value, target, unit, variation, direction = "up" }) {
   const status = getKpiStatus(value, target, direction);

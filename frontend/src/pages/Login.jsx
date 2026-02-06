@@ -6,6 +6,7 @@ export default function Login() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [dni, setDni] = useState("");
   const [error, setError] = useState("");
 
   const handleLogin = async (e) => {
@@ -17,10 +18,15 @@ export default function Login() {
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ dni, email, password })
       });
 
       const data = await res.json();
+
+      if (data.error === "PASSWORD_EXPIRED") {
+        navigate("/change-password");
+        return;
+      }
 
       if (!res.ok) {
         throw new Error(data.error);
@@ -48,6 +54,14 @@ export default function Login() {
           Iniciar sesión
         </h2>
 
+        <input
+          type="text"
+          placeholder="DNI"
+          className="w-full mb-3 p-2 border rounded"
+          value={dni}
+          onChange={(e) => setDni(e.target.value)}
+          required
+        />
         <input
           type="email"
           placeholder="Email"
