@@ -1,79 +1,62 @@
 import ExcelJS from "exceljs";
 import path from "path";
 
-// 📂 archivo único
-const filePath = path.join(
-  process.cwd(),
-  "data",
-  "Consolidacion KPI.xlsx"
-);
+const FILE_PATH = path.resolve("data/Consolidacion_KPI.xlsx");
 
-// cache por período
-const cache = {
-  MTD: null,
-  YTD: null,
-  lastLoad: {
-    MTD: 0,
-    YTD: 0
-  }
-};
+const CACHE_TTL = 60 * 1000;
 
-const CACHE_TTL = 60 * 1000; // 1 min
+let cache = { MTD: null, YTD: null };
+let lastLoad = { MTD: 0, YTD: 0 };
 
-async function readExcel(period) {
-  console.log(`📂 Leyendo Excel hoja: ${period}`);
-
+async function readSheet(sheetName) {
   const workbook = new ExcelJS.Workbook();
+
   await workbook.xlsx.readFile(FILE_PATH);
 
-  const sheet = workbook.getWorksheet(period);
+  const sheet = workbook.getWorksheet(sheetName);
 
-  if (!sheet) {
-    throw new Error(`Hoja ${period} no encontrada`);
-  }
+  const rows = [];
 
-  const result = {};
+  sheet.eachRow((row, index) => {
+    if (index === 1) return; // saltar header
 
-  sheet.eachRow((row, i) => {
-  if (i === 1) return;
+    rows.push({
+      id: row.getCell(1).value,
+      value: row.getCell(2).value,
+      target: row.getCell(3).value
+    });
+  });
 
-  const id = String(row.getCell(1).value).trim();
-
-  const value = Number(row.getCell(2).value) || 0;
-  const target = Number(row.getCell(3).value) || 0;
-
-  let variation = 0;
-
-  if (target !== 0) {
-    variation = ((value - target) / target) * 100;
-  }
-
-  result[id] = {
-    value,
-    target,
-    variation: Number(variation.toFixed(1))
-  };
-});
-
-
-  console.log("RESULT:", result);
-
-  return result;
+  return rows;
 }
 
 export async function getKpisFromExcel(period = "MTD") {
   const now = Date.now();
 
-  // cache hit
-  if (cache[period] && now - cache.lastLoad[period] < CACHE_TTL) {
-    console.log(`⚡ Cache hit: ${period}`);
+  if (cache[period] && now - lastLoad[period] < CACHE_TTL) {
+    console.log("⚡ usando cache", period);
     return cache[period];
   }
 
-  const data = await readExcel(period);
+  console.log("📖 leyendo Excel hoja:", period);
+
+  const rows = await readSheet(period);
+
+  const data = rows.map(r => {
+    const value = Number(r.value || 0);
+    const target = Number(r.target || 0);
+
+    return {
+      id: r.id,
+      value,
+      target,
+      variation:
+        target === 0 ? 0 : ((value - target) / target) * 100
+    };
+  });
 
   cache[period] = data;
-  cache.lastLoad[period] = now;
+  lastLoad[period] = now;
 
   return data;
 }
