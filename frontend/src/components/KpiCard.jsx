@@ -52,7 +52,7 @@ export default function KpiCard({ title, value, target, unit, variation, directi
 
         {/* Variación */}
         <div className={`text-sm font-semibold ${arrowColor}`}>
-          {arrow} {Math.abs(variation)}%
+          {arrow} {Math.abs(variation).toFixed(0)}%
         </div>
       </div>
     </div>

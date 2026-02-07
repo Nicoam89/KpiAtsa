@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../index.css";
-
+import logo from "../assets/logo.jpg";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -52,6 +52,13 @@ export default function Login() {
         onSubmit={handleLogin}
         className="bg-white p-8 rounded-xl shadow-md w-80"
       >
+ <div className="flex flex-col items-center mb-6">
+  <img src={logo} className="h-16 mb-2" />
+  <span className="font-semibold text-gray-600 text-sm">
+  </span>
+</div>
+
+
         <h2 className="text-xl font-bold mb-6 text-center">
           Iniciar sesión
         </h2>
