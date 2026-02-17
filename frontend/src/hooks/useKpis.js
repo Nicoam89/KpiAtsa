@@ -10,8 +10,8 @@ export default function useKpis(period) {
       try {
         setLoading(true);
 
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/kpis?period=${period}`
-      );
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/kpis?period=${period}`);
+        
         if (!res.ok) throw new Error("Error HTTP");
 
         const array = await res.json(); // 👈 ESTA VARIABLE
