@@ -1,5 +1,5 @@
 import PeriodToggle from "./PeriodToggle";
-import logo from "../assets/logo.jpg";
+import logo from "../assets/logo-.jpg";
 import "../styles/layout.css";
 
 export default function Header({ period, setPeriod, onLogout }) {

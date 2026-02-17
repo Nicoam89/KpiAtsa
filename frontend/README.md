@@ -17,6 +17,7 @@ Esta aplicación utiliza las siguientes tecnologías:
 | Despliegue | Vercel |
 | Lenguaje principal | JavaScript |
 
+
 ---
 
 ## 🚀 Características principales
