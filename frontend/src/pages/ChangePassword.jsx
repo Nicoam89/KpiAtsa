@@ -24,7 +24,7 @@ export default function ChangePassword() {
     try {
       setLoading(true);
 
-      const res = await fetch("http://localhost:3000/api/auth/change-password", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
