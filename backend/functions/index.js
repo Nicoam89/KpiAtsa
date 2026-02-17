@@ -1,6 +1,8 @@
 const functions = require("firebase-functions");
 const express = require("express");
 const cors = require("cors");
+const authRoutes = require("./routes/authRoutes");
+const kpiRoutes = require("./routes/kpiRoutes");
 
 const app = express();
 
@@ -21,5 +23,9 @@ app.get("/kpis", (req, res) => {
     period
   });
 });
+
+
+app.use("/auth", authRoutes);
+app.use("/kpis", kpiRoutes);
 
 exports.api = functions.https.onRequest(app);
