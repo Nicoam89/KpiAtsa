@@ -1,17 +1,17 @@
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import User from "../models/User.js";
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const User = require("../models/User");
 
 // ==========================
 // REGISTER
 // ==========================
-export const register = async (req, res) => {
+const register = async (req, res) => {
   try {
     const { dni, email, password } = req.body;
 
     const hash = await bcrypt.hash(password, 10);
 
-    const user = await User.create({
+    await User.create({
       dni,
       email,
       password: hash
@@ -24,21 +24,18 @@ export const register = async (req, res) => {
   }
 };
 
-
 // ==========================
 // LOGIN
 // ==========================
-export const login = async (req, res) => {
+const login = async (req, res) => {
   try {
     const { dni, email, password } = req.body;
 
-    // 🔍 buscar por DNI + email
     const user = await User.findOne({ dni, email });
 
     if (!user)
       return res.status(401).json({ error: "Credenciales inválidas" });
 
-    // 🔐 validar password
     const ok = await bcrypt.compare(password, user.password);
 
     if (!ok)
@@ -58,11 +55,9 @@ export const login = async (req, res) => {
 };
 
 // ==========================
-// Cambiar Contraseña
+// CHANGE PASSWORD
 // ==========================
-
-
-export const changePassword = async (req, res) => {
+const changePassword = async (req, res) => {
   try {
     const { dni, email, oldPassword, newPassword } = req.body;
 
@@ -83,4 +78,8 @@ export const changePassword = async (req, res) => {
   }
 };
 
-
+module.exports = {
+  register,
+  login,
+  changePassword
+};
