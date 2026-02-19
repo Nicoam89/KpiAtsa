@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
-import kpiRoutes from "./routes/kpi.routes.js";
-import authRoutes from "./routes/auth.routes.js";
+import kpiRoutes from "../functions/routes/kpi.routes.js";
+import authRoutes from "../functions/routes/auth.routes.js";
 
 
 const app = express();
