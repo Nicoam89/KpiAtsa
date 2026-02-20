@@ -1,4 +1,6 @@
-const API_BASE = (import.meta.env.VITE_API_URL || "/api").replace(/\/$/, "");
+const rawApiBase = import.meta.env.VITE_API_URL;
+const normalizedApiBase = (rawApiBase || "/api").replace(/\/$/, "");
+const API_BASE = normalizedApiBase || "/api";
 
 function toUrl(path) {
   const normalizedPath = path.startsWith("/") ? path : `/${path}`;
