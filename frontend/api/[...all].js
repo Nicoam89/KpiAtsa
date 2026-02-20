@@ -1,8 +1,19 @@
 let appPromise;
 
-function getApp() {
+async function getApp() {
   if (!appPromise) {
-    appPromise = import("../backend/src/app.js").then((mod) => mod.default);
+    appPromise = (async () => {
+      const dotenvModule = await import("dotenv");
+      dotenvModule.default.config();
+
+      const [{ connectDB }, appModule] = await Promise.all([
+        import("../backend/src/config/db.js"),
+        import("../backend/src/app.js"),
+      ]);
+
+      await connectDB();
+      return appModule.default;
+    })();
   }
 
   return appPromise;
@@ -17,6 +28,8 @@ module.exports = async (req, res) => {
     return res.status(500).json({
       error: "BACKEND_BOOT_ERROR",
       message: "No se pudo inicializar la API en Vercel.",
+      detail: error?.message || "unknown",
     });
   }
 };
+

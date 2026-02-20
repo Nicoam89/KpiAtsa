@@ -1,11 +1,13 @@
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const User = require("../models/User");
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import User from "../models/User.js";
 
 // ==========================
 // REGISTER
 // ==========================
-const register = async (req, res) => {
+
+export const register = async (req, res) => {
+
   try {
     const { dni, email, password } = req.body;
 
@@ -14,7 +16,7 @@ const register = async (req, res) => {
     await User.create({
       dni,
       email,
-      password: hash
+      password: hash,
     });
 
     res.json({ message: "Usuario creado" });
@@ -27,7 +29,7 @@ const register = async (req, res) => {
 // ==========================
 // LOGIN
 // ==========================
-const login = async (req, res) => {
+export const login = async (req, res) => {
   try {
     const { dni, email, password } = req.body;
 
@@ -38,14 +40,10 @@ const login = async (req, res) => {
 
     const ok = await bcrypt.compare(password, user.password);
 
-    if (!ok)
+    if (!ok){
       return res.status(401).json({ error: "Credenciales inválidas" });
-
-    const token = jwt.sign(
-      { id: user._id },
-      process.env.JWT_SECRET,
-      { expiresIn: "8h" }
-    );
+    }
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "8h" });
 
     res.json({ token });
 
@@ -57,15 +55,20 @@ const login = async (req, res) => {
 // ==========================
 // CHANGE PASSWORD
 // ==========================
-const changePassword = async (req, res) => {
+export const changePassword = async (req, res) => {
   try {
     const { dni, email, oldPassword, newPassword } = req.body;
 
     const user = await User.findOne({ dni, email });
-    if (!user) return res.status(404).json({ error: "Usuario no encontrado" });
+      if (!user) {
+            return res.status(404).json({ error: "Usuario no encontrado" });
+          }
 
     const valid = await bcrypt.compare(oldPassword, user.password);
-    if (!valid) return res.status(401).json({ error: "Contraseña incorrecta" });
+    if (!valid) {
+      return res.status(401).json({ error: "Contraseña incorrecta" });
+    }
+
 
     user.password = await bcrypt.hash(newPassword, 10);
     user.passwordUpdatedAt = new Date();
@@ -76,10 +79,4 @@ const changePassword = async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: "Error interno" });
   }
-};
-
-module.exports = {
-  register,
-  login,
-  changePassword
 };
