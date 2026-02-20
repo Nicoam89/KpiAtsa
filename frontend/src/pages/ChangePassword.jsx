@@ -25,7 +25,7 @@ export default function ChangePassword() {
     try {
       setLoading(true);
 
-      await apiRequest("/auth/login", {
+      await apiRequest("/api/auth/change-password", {
         method: "PUT",
         body: {
           dni,

@@ -27,13 +27,22 @@ function removeApiPrefix(path) {
 }
 
 
-function toUrl(path) {
+function removeApiPrefix(path) {
   const normalizedPath = normalizePath(path);
+  return normalizedPath.replace(/^\/api(?=\/|$)/, "") || "/";
+}
+
+function toUrl(path) {
+
+const normalizedPath = normalizePath(path);
+
+  if (/^\/api(\/|$)/.test(normalizedPath)) {
+    return normalizedPath;
+  }
 
   if (!apiBaseAlreadyIncludesApiSegment && /^\/(auth|kpis)(\/|$)/.test(normalizedPath)) {
     return `${API_BASE}${ensureApiPrefix(normalizedPath)}`;
   }
-
 
   return `${API_BASE}${normalizedPath}`;
 }
@@ -97,7 +106,6 @@ function getAlternatePath(path) {
   return normalizedPath;
 }
 
-
 export async function apiRequest(path, options = {}) {
   const headers = {
     "Content-Type": "application/json",
@@ -113,11 +121,10 @@ export async function apiRequest(path, options = {}) {
     config.body = JSON.stringify(config.body);
   }
 
-  const firstResponse = await fetch(toUrl(path), config);
+const firstResponse = await fetch(toUrl(path), config);
   const firstPayload = await parseResponseBody(firstResponse);
 
-
- if (firstResponse.ok) {
+  if (firstResponse.ok) {
     return firstPayload;
   }
 
@@ -132,8 +139,5 @@ export async function apiRequest(path, options = {}) {
 
     throw buildError(secondResponse, secondPayload);
   }
-
-  throw buildError(firstResponse, firstPayload);
-
-
+    throw buildError(firstResponse, firstPayload);
 }

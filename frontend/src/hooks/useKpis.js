@@ -11,7 +11,7 @@ export default function useKpis(period) {
       try {
         setLoading(true);
 
-        const array = await apiRequest(`/kpis?period=${period}`);
+          const array = await apiRequest(`/api/kpis?period=${period}`);
 
         const objectById = {};
 
