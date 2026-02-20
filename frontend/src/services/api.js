@@ -1,9 +1,17 @@
 const rawApiBase = import.meta.env.VITE_API_URL;
 const normalizedApiBase = (rawApiBase || "/api").replace(/\/$/, "");
 const API_BASE = normalizedApiBase || "/api";
+const apiBaseAlreadyIncludesApiSegment = /\/api$/i.test(API_BASE);
+
 
 function toUrl(path) {
-  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
+  let normalizedPath = path.startsWith("/") ? path : `/${path}`;
+
+  if (!apiBaseAlreadyIncludesApiSegment && /^\/(auth|kpis)(\/|$)/.test(normalizedPath)) {
+    normalizedPath = `/api${normalizedPath}`;
+  }
+
+
   return `${API_BASE}${normalizedPath}`;
 }
 
