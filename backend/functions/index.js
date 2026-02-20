@@ -10,8 +10,8 @@ const app = express();
 app.use(cors({ origin: true }));
 app.use(express.json());
 
-app.get("/test", (req, res) => {
-  res.json({ ok: true });
+app.get("/auth/test", (req, res) => {
+  res.json({ ok: "auth funcionando" });
 });
 
 app.use("/auth", authRoutes);

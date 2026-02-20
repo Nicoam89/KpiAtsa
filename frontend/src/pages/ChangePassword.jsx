@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { apiRequest } from "../services/api";
 
 export default function ChangePassword() {
   const navigate = useNavigate();
@@ -24,24 +25,15 @@ export default function ChangePassword() {
     try {
       setLoading(true);
 
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
+      await apiRequest("/auth/login", {
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
+        body: {
           dni,
           email,
           oldPassword,
           newPassword,
-        }),
+        },
       });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.error || "Error actualizando contraseña");
-      }
 
       alert("✅ Contraseña actualizada. Iniciá sesión nuevamente");
 

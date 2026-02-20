@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../index.css";
 import logo from "../assets/logo-.jpg";
+import { apiRequest } from "../services/api";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -15,24 +16,11 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
+      const data = await apiRequest("/auth/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ dni, email, password })
+        body: { dni, email, password },
       });
 
-      const data = await res.json();
-
-      if (data.error === "PASSWORD_EXPIRED") {
-        navigate("/change-password");
-        return;
-      }
-
-      if (!res.ok) {
-        throw new Error(data.error);
-      }
 
       /* 🔐 guardar token */
       localStorage.setItem("token", data.token);
@@ -41,7 +29,11 @@ export default function Login() {
       navigate("/");
 
     } catch (err) {
-      setError(err.message);
+       if (err.message === "PASSWORD_EXPIRED") {
+        navigate("/change-password");
+        return;
+      }
+     setError(err.message);
     }
   };
 

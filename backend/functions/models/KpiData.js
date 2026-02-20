@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const KpiDataSchema = new mongoose.Schema({
-  kpi: { type: String, required: true }, // facturacion, dso, etc
+  kpi: { type: String, required: true }, 
   period: { type: String, enum: ["MTD", "YTD"], required: true },
 
   value: { type: Number, required: true },

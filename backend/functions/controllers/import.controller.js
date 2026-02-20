@@ -1,5 +1,5 @@
 import ExcelJS from "exceljs";
-import { Facturacion } from "../models/Facturacion.js";
+import { Facturacion } from "./facturacion.controller.js";
 
 export const importFacturacion = async (req, res) => {
   try {
