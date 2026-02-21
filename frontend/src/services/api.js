@@ -49,6 +49,16 @@ export async function apiRequest(path, options = {}) {
   const payload = await parseResponseBody(response);
 
   if (!response.ok) {
+        if (
+      response.status === 404 &&
+      typeof payload === "string" &&
+      payload.includes("NOT_FOUND")
+    ) {
+      throw new Error(
+        `API_NOT_FOUND: ${response.url}. Configurá Vercel Root Directory en la raíz del repo (no en frontend) para exponer /api/*.`
+      );
+    }
+
     const message =
       (payload && typeof payload === "object" && (payload.error || payload.message)) ||
       (typeof payload === "string" && payload) ||
