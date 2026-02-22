@@ -19,7 +19,6 @@ async function getApp() {
   return appPromise;
 }
 
-
 module.exports = async (req, res) => {
   try {
     const app = await getApp();
