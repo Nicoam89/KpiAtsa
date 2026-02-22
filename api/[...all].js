@@ -3,9 +3,6 @@ let appPromise;
 async function getApp() {
   if (!appPromise) {
     appPromise = (async () => {
-      const dotenvModule = await import("dotenv");
-      dotenvModule.default.config();
-
       const [{ connectDB }, appModule] = await Promise.all([
         import("../backend/src/config/db.js"),
         import("../backend/src/app.js"),
@@ -32,4 +29,3 @@ module.exports = async (req, res) => {
     });
   }
 };
-
