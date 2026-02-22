@@ -1,0 +1,13 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "vite",
+  "installCommand": "if [ -d frontend ] && [ -f frontend/package.json ] && [ -d backend ] && [ -f backend/package.json ]; then npm install && npm install --prefix frontend && npm install --prefix backend; else npm install; fi",
+  "buildCommand": "if [ -d frontend ] && [ -f frontend/package.json ]; then npm run build --prefix frontend && rm -rf dist && cp -r frontend/dist dist; else npm run build; fi",
+  "outputDirectory": "dist",
+  "rewrites": [
+    {
+      "source": "/((?!api).*)",
+      "destination": "/index.html"
+    }
+  ]
+}
