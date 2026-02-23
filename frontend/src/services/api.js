@@ -21,8 +21,7 @@ async function parseResponseBody(response) {
   }
 
   const text = await response.text();
-
-    if (!text) return null;
+ if (!text) return null;
 
   try {
     return JSON.parse(text);
@@ -33,9 +32,9 @@ async function parseResponseBody(response) {
 
 export async function apiRequest(path, options = {}) {
 
-    const config = {
+const config = {
     ...options,
-    headers: {
+ headers: {
       "Content-Type": "application/json",
       ...(options.headers || {}),
     },
@@ -49,7 +48,7 @@ export async function apiRequest(path, options = {}) {
   const payload = await parseResponseBody(response);
 
   if (!response.ok) {
-        if (
+    if (
       response.status === 404 &&
       typeof payload === "string" &&
       payload.includes("NOT_FOUND")

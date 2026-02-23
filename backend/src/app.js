@@ -1,7 +1,10 @@
 import express from "express";
 import cors from "cors";
-import kpiRoutes from "../functions/routes/kpi.routes.js";
-import authRoutes from "../functions/routes/auth.routes.js";
+import kpiRoutesImport from "../functions/routes/kpi.routes.js";
+import authRoutesImport from "../functions/routes/auth.routes.js";
+
+const kpiRoutes = kpiRoutesImport?.default || kpiRoutesImport;
+const authRoutes = authRoutesImport?.default || authRoutesImport;
 
 
 const app = express();
@@ -9,14 +12,18 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use("/api/kpis", kpiRoutes);
-app.use("/kpis", kpiRoutes);
+if (typeof kpiRoutes === "function") {
+  app.use("/api/kpis", kpiRoutes);
+  app.use("/kpis", kpiRoutes);
+}
 
 app.get("/api/health", (req, res) => {
   res.json({ status: "OK", message: "Backend funcionando" });
 });
 
-app.use("/api/auth", authRoutes);
-app.use("/auth", authRoutes);
+if (typeof authRoutes === "function") {
+  app.use("/api/auth", authRoutes);
+  app.use("/auth", authRoutes);
+}
 
 export default app;
