@@ -44,7 +44,7 @@ const config = {
     config.body = JSON.stringify(config.body);
   }
 
-  const primaryUrl = toUrl(path);
+    const primaryUrl = toUrl(path);
   const response = await fetch(primaryUrl, config);
   const payload = await parseResponseBody(response);
 
@@ -67,10 +67,6 @@ const config = {
       }
     }
 
-
-  const payload = await parseResponseBody(response);
-
-  if (!response.ok) {
     if (
       response.status === 404 &&
       typeof payload === "string" &&
@@ -90,3 +86,4 @@ const config = {
 
   return payload;
 }
+
