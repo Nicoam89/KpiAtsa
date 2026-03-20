@@ -1,7 +1,11 @@
 import ExcelJS from "exceljs";
 import path from "path";
+import { fileURLToPath } from "url";
 
-const FILE_PATH = path.resolve("data/Consolidacion_KPI.xlsx");
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const FILE_PATH = path.resolve(__dirname, "../../data/Consolidacion_KPI.xlsx");
+
 
 const CACHE_TTL = 60 * 1000;
 
