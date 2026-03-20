@@ -44,7 +44,30 @@ const config = {
     config.body = JSON.stringify(config.body);
   }
 
-  const response = await fetch(toUrl(path), config);
+  const primaryUrl = toUrl(path);
+  const response = await fetch(primaryUrl, config);
+  const payload = await parseResponseBody(response);
+
+  if (!response.ok) {
+    const pathString = String(path || "");
+    const canRetryWithoutApiPrefix =
+      response.status === 404 &&
+      typeof payload === "string" &&
+      payload.includes("NOT_FOUND") &&
+      /^\/api(\/|$)/.test(pathString);
+
+    if (canRetryWithoutApiPrefix) {
+      const fallbackPath = pathString.replace(/^\/api(?=\/|$)/, "") || "/";
+      const fallbackUrl = toUrl(fallbackPath);
+      const fallbackResponse = await fetch(fallbackUrl, config);
+      const fallbackPayload = await parseResponseBody(fallbackResponse);
+
+      if (fallbackResponse.ok) {
+        return fallbackPayload;
+      }
+    }
+
+
   const payload = await parseResponseBody(response);
 
   if (!response.ok) {
