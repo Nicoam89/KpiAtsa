@@ -1,12 +1,20 @@
 const rawApiBase = import.meta.env.VITE_API_URL;
 const normalizedApiBase = (rawApiBase || "/api").replace(/\/$/, "");
 const API_BASE = normalizedApiBase || "/api";
+const HAS_CUSTOM_API_BASE = Boolean(rawApiBase);
 
 function toUrl(path) {
   if (/^https?:\/\//i.test(path)) return path;
+
   const normalizedPath = path.startsWith("/") ? path : `/${path}`;
-  if (/^\/api(\/|$)/.test(normalizedPath)) return normalizedPath;
-  return `${API_BASE}${normalizedPath}`;
+
+  if (!HAS_CUSTOM_API_BASE) {
+    if (/^\/api(\/|$)/.test(normalizedPath)) return normalizedPath;
+    return `${API_BASE}${normalizedPath}`;
+  }
+
+  const withoutApiPrefix = normalizedPath.replace(/^\/api(?=\/|$)/, "");
+  return `${API_BASE}${withoutApiPrefix.startsWith("/") ? withoutApiPrefix : `/${withoutApiPrefix}`}`;
 }
 
 async function parseResponseBody(response) {
@@ -44,7 +52,7 @@ const config = {
     config.body = JSON.stringify(config.body);
   }
 
-    const primaryUrl = toUrl(path);
+  const primaryUrl = toUrl(path);
   const response = await fetch(primaryUrl, config);
   const payload = await parseResponseBody(response);
 
@@ -73,7 +81,7 @@ const config = {
       payload.includes("NOT_FOUND")
     ) {
       throw new Error(
-        `API_NOT_FOUND: ${response.url}. Configurá Vercel Root Directory en la raíz del repo (no en frontend) para exponer /api/*.`
+        `API_NOT_FOUND: ${response.url}. Si tu backend corre fuera de Vercel (por ejemplo Firebase/Firestore), configurá VITE_API_URL con la URL base de esa API.`
       );
     }
 
