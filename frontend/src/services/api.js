@@ -62,7 +62,8 @@ const config = {
       response.status === 404 &&
       typeof payload === "string" &&
       payload.includes("NOT_FOUND") &&
-      /^\/api(\/|$)/.test(pathString);
+      /^\/api(\/|$)/.test(pathString) &&
+      !HAS_CUSTOM_API_BASE;
 
     if (canRetryWithoutApiPrefix) {
       const fallbackPath = pathString.replace(/^\/api(?=\/|$)/, "") || "/";
@@ -94,4 +95,6 @@ const config = {
 
   return payload;
 }
+
+
 

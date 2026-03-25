@@ -7,8 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-     "preview": "vite preview",
-    "vercel:install": "npm install --include=dev && npm install --prefix ../backend && npm install --prefix ../backend/functions",
+    "preview": "vite preview",
+    "vercel:install": "npm install --include=dev && npm install --prefix ../backend",
     "vercel:build": "npm run build"
   },
   "dependencies": {
