@@ -16,7 +16,7 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      const data = await apiRequest("/auth/login", {
+      const data = await apiRequest("/api/auth/login", {
         method: "POST",
         body: { dni, email, password },
       });

@@ -95,6 +95,3 @@ const config = {
 
   return payload;
 }
-
-
-

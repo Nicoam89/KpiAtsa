@@ -3,14 +3,25 @@
   "installCommand": "npm run vercel:install",
   "buildCommand": "npm run vercel:build",
   "outputDirectory": "dist",
-  "rewrites": [
+  "routes": [
     {
-      "source": "/api/(.*)",
-      "destination": "/$1"
+      "src": "/api/(.*)",
+      "dest": "/api/[...all]"
     },
     {
-      "source": "/((?!api).*)",
-      "destination": "/index.html"
+      "src": "/auth/(.*)",
+      "dest": "/api/[...all]"
+    },
+    {
+      "src": "/kpis/(.*)",
+      "dest": "/api/[...all]"
+    },
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
     }
   ]
 }
